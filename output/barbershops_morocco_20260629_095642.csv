@@ -1,0 +1,5 @@
+﻿name,address,city,phone,phone_formatted,website,rating,reviews,latitude,longitude,lead_score,category,status,scraped_at,source
+The Barbershop Premium - Casablanca,"Barbier · 3 Rue Bab Al Irfane
+Ouvert · Ferme à 01:00",Casablanca,,,https://thepremiumbarbershop.ma/,4.7,,,,70,Barbershop,OPERATIONAL,2026-06-29T09:56:42.109858,google_maps
+Black Home Barber - Coiffeur Homme Casablanca,"Salon de coiffure · 2 Rue Ahmed El Mokri
+Ouvert · Ferme à 22:00",Casablanca,,,,4.8,182,,,70,Barbershop,OPERATIONAL,2026-06-29T09:56:42.109892,google_maps

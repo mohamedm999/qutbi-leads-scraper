@@ -1,0 +1,54 @@
+services:
+  scraper:
+    build: .
+    container_name: qutbi-scraper
+    image: qutbi-leads-scraper:latest
+    volumes:
+      # Mount output folder so CSV/JSON files persist on your host
+      - ./output:/app/output
+    environment:
+      # Optional: Set your Google Places API key here
+      - GOOGLE_PLACES_API_KEY=${GOOGLE_PLACES_API_KEY:-}
+    # Default: scrape 10 cities with Playwright
+    # Override with: docker compose run scraper --cities 20 --headless false
+    command: >
+      --method playwright
+      --cities 10
+      --max-listings 20
+      --format both
+    # Uncomment to run with visible browser (X11 forwarding needed)
+    # stdin_open: true
+    # tty: true
+
+  # Quick test: scrape just Casablanca
+  quick-test:
+    build: .
+    container_name: qutbi-scraper-test
+    image: qutbi-leads-scraper:latest
+    volumes:
+      - ./output:/app/output
+    profiles:
+      - test
+    command: >
+      --method playwright
+      --cities 1
+      --max-listings 10
+      --format csv
+
+  # Full scrape: all 20 cities with detailed info
+  full-scrape:
+    build: .
+    container_name: qutbi-scraper-full
+    image: qutbi-leads-scraper:latest
+    volumes:
+      - ./output:/app/output
+    environment:
+      - GOOGLE_PLACES_API_KEY=${GOOGLE_PLACES_API_KEY:-}
+    profiles:
+      - full
+    command: >
+      --method playwright
+      --cities 20
+      --max-listings 30
+      --details
+      --format both
