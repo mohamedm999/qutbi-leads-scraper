@@ -130,21 +130,21 @@ def save_to_json(shops: list[dict], filename: Optional[str] = None) -> str:
 
 
 def deduplicate(shops: list[dict]) -> list[dict]:
-    """Remove duplicate shops by name+city or phone."""
+    """Remove duplicate shops by phone or name+city."""
     seen = set()
     unique = []
     for shop in shops:
+        phone = sanitize_phone(shop.get("phone")) or ""
         name = (shop.get("name") or "").lower().strip()
         city = (shop.get("city") or "").lower().strip()
-        phone = sanitize_phone(shop.get("phone")) or ""
 
-        key1 = f"{name}|{city}"
-        key2 = f"phone:{phone}" if phone else ""
+        if phone:
+            key = f"phone:{phone}"
+        else:
+            key = f"{name}|{city}"
 
-        if key1 not in seen and (not key2 or key2 not in seen):
-            seen.add(key1)
-            if key2:
-                seen.add(key2)
+        if key not in seen:
+            seen.add(key)
             unique.append(shop)
 
     removed = len(shops) - len(unique)

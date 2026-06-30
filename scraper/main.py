@@ -40,9 +40,9 @@ Examples:
 
     parser.add_argument(
         "--method",
-        choices=["playwright", "places_api", "yelo"],
+        choices=["playwright", "places_api", "yelo", "avito"],
         default="playwright",
-        help="Scraping method (default: playwright)",
+        help="Scraping method: playwright (Google Maps), places_api, yelo (free directory), avito (classifieds)",
     )
     parser.add_argument(
         "--api-key",
@@ -112,6 +112,14 @@ def main():
         from .places_api import scrape_all
 
         shops = scrape_all(args.api_key, max_cities=args.cities)
+
+    elif args.method == "avito":
+        logger.info("Using Avito.ma classifieds method (stealth)")
+        logger.info(f"Scraping {args.cities} cities...")
+
+        from .avito_scraper import scrape_all_avito_sync
+
+        shops = scrape_all_avito_sync(max_cities=args.cities, max_listings=args.max_listings)
 
     elif args.method == "yelo":
         logger.info("Using yelo.ma directory method")
