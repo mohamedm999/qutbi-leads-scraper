@@ -203,7 +203,7 @@ async def scrape_city_playwright(
     """Scrape barbershops for a single city using Playwright."""
     shops = []
 
-    queries = SEARCH_QUERIES[:3]
+    queries = SEARCH_QUERIES
 
     for query in queries:
         search_url = f"https://www.google.com/maps/search/{query}+{city_name}+morocco/@{lat},{lng},{14 - radius//5}z"

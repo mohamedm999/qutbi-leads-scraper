@@ -15,7 +15,7 @@ import logging
 import sys
 import os
 
-from .utils import save_to_csv, save_to_json, print_summary
+from .utils import save_to_csv, save_to_json, print_summary, deduplicate
 
 logging.basicConfig(
     level=logging.INFO,
@@ -40,7 +40,7 @@ Examples:
 
     parser.add_argument(
         "--method",
-        choices=["playwright", "places_api"],
+        choices=["playwright", "places_api", "yelo"],
         default="playwright",
         help="Scraping method (default: playwright)",
     )
@@ -112,6 +112,14 @@ def main():
         from .places_api import scrape_all
 
         shops = scrape_all(args.api_key, max_cities=args.cities)
+
+    elif args.method == "yelo":
+        logger.info("Using yelo.ma directory method")
+        logger.info(f"Scraping {args.cities} cities...")
+
+        from .directory_scraper import scrape_all_yelo_sync
+
+        shops = scrape_all_yelo_sync(max_cities=args.cities, max_listings=args.max_listings)
 
     else:
         logger.info("Using Playwright (browser) method")
