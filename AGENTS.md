@@ -28,7 +28,14 @@ Single-package Python CLI tool (`scraper/`) that generates barbershop leads in M
 Edit `scraper/cities.py` — add a `(name, lat, lng, radius_km)` tuple to `MOROCCAN_CITIES`. Keep radius between 8-15km.
 
 ### Add a search query
-Edit `scraper/cities.py` — append a new string to `SEARCH_QUERIES`. The first 3 queries are used by default; `--details` or full scrape uses all 8.
+Edit `scraper/cities.py` — append a new string to `SEARCH_QUERIES`. All 8 queries are used. For yelo.ma, only the `Coiffeurs` category is scraped. For maps_scraper, all 8 queries are used.
+
+### Add a new source
+1. Create `scraper/<name>_scraper.py` with `scrape_all_<name>_sync()` entry point
+2. Add `--method <name>` to `scraper/main.py`
+3. Add to `choices` in the argument parser
+4. Add to the `if args.method == "<name>":` branch
+5. Update `README.md` and `docker-compose.yml` if needed
 
 ### Add a new output field
 1. Add the field to `shop` dicts created in `maps_scraper.py` and/or `places_api.py`
@@ -40,7 +47,7 @@ Edit `utils.py:score_lead()` — adjust point values. Keep max at 100.
 
 ### Fix phone extraction for a new country
 1. Edit `maps_scraper.py:_extract_phone()` — add new regex patterns
-2. Edit `utils.py:sanitize_phone()` — add country code normalization
+2. Edit `utils.py:sanitize_phone()` — add country code normalization (currently handles all `0X` prefixes via generic `starts with "0"` rule)
 
 ### Debug Playwright scraping
 Run locally: `python -m scraper.main --headless false --cities 1`. The visible browser shows what Google Maps returns.
