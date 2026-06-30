@@ -10,7 +10,7 @@ import time
 from typing import Optional
 
 from .cities import MOROCCAN_CITIES
-from .utils import deduplicate
+from .utils import deduplicate, sanitize_phone
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +67,7 @@ async def scrape_yelo_city(city_name: str, context, max_listings: int = 50) -> l
                     phone = ""
                     if await phone_el.count() > 0:
                         raw = (await phone_el.inner_text()).strip()
-                        phone = _extract_phone(raw) or raw
+                        phone = sanitize_phone(_extract_phone(raw)) or sanitize_phone(raw) or raw
 
                     if name:
                         lower = name.lower()

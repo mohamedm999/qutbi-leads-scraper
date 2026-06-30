@@ -17,14 +17,12 @@ def sanitize_phone(phone: str) -> Optional[str]:
     """Clean and normalize a phone number to E.164 format for Morocco."""
     if not phone:
         return None
-    # Remove all non-digit characters
     digits = re.sub(r"[^\d+]", "", phone.strip())
-    # Morocco country code normalization
     if digits.startswith("+212"):
         return digits
     elif digits.startswith("00212"):
         return "+212" + digits[5:]
-    elif digits.startswith("06") or digits.startswith("07"):
+    elif digits.startswith("0"):
         return "+212" + digits[1:]
     elif digits.startswith("212"):
         return "+" + digits

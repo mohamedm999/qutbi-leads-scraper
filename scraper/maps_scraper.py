@@ -13,7 +13,7 @@ import time
 from typing import Optional
 
 from .cities import MOROCCAN_CITIES, SEARCH_QUERIES
-from .utils import deduplicate
+from .utils import deduplicate, sanitize_phone
 
 logger = logging.getLogger(__name__)
 
@@ -133,7 +133,7 @@ async def _extract_from_listing(page, element) -> dict:
             pass
 
         if info_text:
-            phone = _extract_phone(info_text)
+            phone = sanitize_phone(_extract_phone(info_text))
             if phone:
                 shop["phone"] = phone
 
